@@ -60,37 +60,93 @@ class TomatoExpertSystem:
                 "disease": "D01", 
                 "solutions": ["S01", "S02", "S03", "S04"], 
             },
+            {
+                "id": "R02", 
+                "conditions": {"C01", "C02", "C06", "C012"}, 
+                "disease": "D02", 
+                "solutions": ["S05", "S06", "S07"], 
+            },
+            {
+                "id": "R03", 
+                "conditions": {"C01", "C07", "C09"}, 
+                "disease": "D03", 
+                "solutions": ["S01", "S05", "S08", "S09"], 
+            },
+            {
+                "id": "R04", 
+                "conditions": {"C02", "C010", "C011", "C012"}, 
+                "disease": "D04", 
+                "solutions": ["S01", "S05", "S08", "S09"], 
+            },
+            {
+                "id": "R05", 
+                "conditions": {"C01", "C02", "C07", "C08", "C11", "C12"}, 
+                "disease": "D05", 
+                "solutions": ["S01", "S05", "S08", "S09"], 
+            },
+            {
+                "id": "R06", 
+                "conditions": {"C01", "C09", "C16"}, 
+                "disease": "D06", 
+                "solutions": ["S01", "S05", "S09", "S10"], 
+            },
+            {
+                "id": "R07", 
+                "conditions": {"C01", "C06", "C10", "C16"}, 
+                "disease": "D07", 
+                "solutions": ["S01", "S05", "S09", "S10"], 
+            },
+            {
+                "id": "R08", 
+                "conditions": {"C01", "C02", "C10", "C6", "C12"}, 
+                "disease": "D08", 
+                "solutions": ["S11", "S12", "S13", "S14"], 
+            },
+            {
+                "id": "R09", 
+                "conditions": {"C03", "C04", "C05", "C15", "C16"}, 
+                "disease": "D09", 
+                "solutions": ["S11", "S14", "S15"], 
+            },
+            {
+                "id": "R10", 
+                "conditions": {"C06", "C11", "C12", "C14"}, 
+                "disease": "D10", 
+                "solutions": ["S14", "S15", "S16"], 
+            },
+            {
+                "id": "R11", 
+                "conditions": {"C01", "C06", "C12", "C14"}, 
+                "disease": "D11", 
+                "solutions": ["S07", "S14", "S17"], 
+            },
+            {
+                "id": "R12", 
+                "conditions": {"C05", "C08", "C15", "C16"}, 
+                "disease": "D12", 
+                "solutions": ["S14", "S15", "S16", "S18"], 
+            },
+            
         ]
 
     def forward_chain(self, input_conditions: Set[str]) -> List[Dict]:
         results = []
-        activated_rules = set()
-        
-        # Proses forward chaining
-        while True:
-            new_rules_activated = False
-            
-            for rule in self.rules:
-                if rule["id"] not in activated_rules:
-                    if rule["conditions"].issubset(input_conditions):
-                        # Tambahkan kesimpulan
-                        disease_desc = self.mappings["diseases"][rule["disease"]]
-                        solution_desc = [self.mappings["solutions"][s] for s in rule["solutions"]]
-                        condition_desc = [self.mappings["conditions"][c] for c in rule["conditions"]]
-                        
-                        results.append({
-                            "rule_id": rule["id"],
-                            "disease": disease_desc,
-                            "solutions": solution_desc,
-                            "matched_conditions": condition_desc
-                        })
-                        
-                        activated_rules.add(rule["id"])
-                        new_rules_activated = True
-            
-            if not new_rules_activated:
-                break
-        
+    
+        for rule in self.rules:
+            if rule["conditions"] == input_conditions:  # Pastikan kondisi harus sama persis
+                disease_desc = self.mappings["diseases"][rule["disease"]]
+                solution_desc = [self.mappings["solutions"][s] for s in rule["solutions"]]
+                condition_desc = [self.mappings["conditions"][c] for c in rule["conditions"]]
+
+                results.append({
+                    "rule_id": rule["id"],
+                    "disease": disease_desc,
+                    "solutions": solution_desc,
+                    "matched_conditions": condition_desc
+                })
+        if not results:
+            return [{"message": "Tidak ada diagnosis yang cocok untuk kondisi yang diberikan."}]
+    
         return results
 
     def get_mappings(self) -> Dict:
