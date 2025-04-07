@@ -30,6 +30,12 @@ val Typography = Typography(
         fontFamily = Poppins,
         fontSize = 20.sp,
         color = Color(0xFF2F2F2F),
+        fontWeight = FontWeight.Medium,
+    ),
+    bodySmall  = TextStyle(
+        fontFamily = Poppins,
+        fontSize = 14.sp,
+        color = Color(0xFF2F2F2F),
         fontWeight = FontWeight.Bold,
     ),
 )

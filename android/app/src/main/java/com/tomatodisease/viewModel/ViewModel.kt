@@ -1,34 +1,31 @@
 package com.tomatodisease.viewModel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tomatodisease.model.DiagnosisResponse
+import com.tomatodisease.model.MappingDataResponse
 import com.tomatodisease.service.RetrofitInstance
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class DiagnosisViewModel: ViewModel(){
-    private var diagnosisData by mutableStateOf<DiagnosisResponse?>(null)
-        private set
+class MappingDataViewModel : ViewModel() {
+    private val _data = MutableStateFlow<List<MappingDataResponse>>(emptyList())
+    val data: StateFlow<List<MappingDataResponse>> = _data
 
-    private var isLoading by mutableStateOf(false)
-    private var error by mutableStateOf<String?>(null)
+    init {
+        fetchDiagnosisData()
+    }
 
-    fun fetchDiagnosisData(){
+    private fun fetchDiagnosisData() {
         viewModelScope.launch {
-            isLoading = true
-            error = null
-
             try {
-                val response = RetrofitInstance.apiService.getDiagnosisData()
-                diagnosisData = response
+                val response = RetrofitInstance.api.getDiagnosisData()
+                _data.value = listOf(response)
             } catch (e: Exception) {
-                error = e.localizedMessage
-            } finally {
-                isLoading = false
+                _data.value = emptyList()
             }
         }
     }
 }
+
+

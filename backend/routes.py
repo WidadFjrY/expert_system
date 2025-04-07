@@ -16,15 +16,25 @@ class DiagnosisResponse(BaseModel):
     solutions: List[str]
     matched_conditions: List[str]
 
-@app.post("/diagnose", response_model=List[DiagnosisResponse])
-def diagnose(request: DiagnosisRequest):
+@app.post("/diagnose-rule")
+def diagnose_rule(request: DiagnosisRequest):
     input_conditions = set(request.condition_codes)
     result = expert_system.forward_chain(input_conditions)
 
-    if isinstance(result, list) and "message" in result[0]:  
-        return JSONResponse(content=result[0], status_code=404)  
+    if isinstance(result, list) and "message" in result[0]:
+        return JSONResponse(content=result[0], status_code=404)
+
+    return {"rule_id": result[0]["rule_id"]}
+
+@app.get("/diagnose/{rule_id}", response_model=DiagnosisResponse)
+def get_diagnosis(rule_id: str):
+    result = expert_system.get_diagnosis_by_rule_id(rule_id)
+
+    if result is None:
+        return JSONResponse(content={"message": "Rule tidak ditemukan"}, status_code=404)
 
     return result
+
 @app.get("/mappings")
 def get_mappings():
     return expert_system.get_mappings()

@@ -74,7 +74,7 @@ class TomatoExpertSystem:
             },
             {
                 "id": "R04", 
-                "conditions": {"C02", "C010", "C011", "C012"}, 
+                "conditions": {"C02", "C10", "C11", "C12"}, 
                 "disease": "D04", 
                 "solutions": ["S01", "S05", "S08", "S09"], 
             },
@@ -150,4 +150,33 @@ class TomatoExpertSystem:
         return results
 
     def get_mappings(self) -> Dict:
-        return self.mappings
+        return {
+            "conditions": [
+                {"id": key, "description": value}
+                for key, value in self.mappings["conditions"].items()
+            ],
+            "diseases": [
+                {"id": key, "description": value}
+                for key, value in self.mappings["diseases"].items()
+            ],
+            "solutions": [
+                {"id": key, "description": value}
+                for key, value in self.mappings["solutions"].items()
+            ]
+    }
+
+    def get_diagnosis_by_rule_id(self, rule_id: str) -> dict:
+        for rule in self.rules:
+            if rule["id"] == rule_id:
+                disease_desc = self.mappings["diseases"][rule["disease"]]
+                solution_desc = [self.mappings["solutions"][s] for s in rule["solutions"]]
+                condition_desc = [self.mappings["conditions"][c] for c in rule["conditions"]]
+
+                return {
+                    "rule_id": rule["id"],
+                    "disease": disease_desc,
+                    "solutions": solution_desc,
+                    "matched_conditions": condition_desc
+                }
+        return None
+

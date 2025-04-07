@@ -1,5 +1,6 @@
 package com.tomatodisease.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class MappingDataResponse(
@@ -32,7 +33,23 @@ data class Solution(
     val description: String
 )
 
-data class DiagnosisRequest(
+data class DiagnoseRuleRequest(
     @SerializedName("condition_codes")
     val conditionCodes: List<String>
+)
+
+data class DiagnoseRuleResponse(
+    @SerializedName("rule_id")
+    val ruleId: String
+)
+
+data class DiagnoseGetResponse(
+    @SerializedName("rule_id")
+    val ruleId: String,
+    @SerializedName("disease")
+    val disease: String,
+    @SerializedName("solutions")
+    val solution: List<String>,
+    @SerializedName("matched_conditions")
+    val matchedConditions: List<String>
 )
