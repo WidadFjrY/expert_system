@@ -13,9 +13,12 @@ class TomatoExpertSystem:
                 "C07": "Batang tampak kering memanjang berwarna abu-abu",
                 "C08": "Ada lubang buah setiap tomat",
                 "C09": "Batang mudah patah",
-                "C10": "Daun keriting dan kerdil, melengkung ke bawah, daun terlihat seperti terselubungi tepung putih",
+                "C10": "Daun keriting, kerdil, melengkung ke bawah, dan daun terlihat seperti terselubungi tepung putih",
                 "C11": "Daun menyempit seperti pita, mengecil dan menggulung ke atas",
-                "C12": "Buah busuk dan jika dibuka ada belatung"
+                "C12": "Buah busuk dan jika dibuka ada belatung",
+                "C13": "Ada retakan dan sobekan pada buah",
+                "C14": "Ada bercak berwarna kuning pada daun",
+                "C15": "Ada cekungan berwarna gelap coklat kehitaman pada buah terutama ujung buah (pantat buah)"
             },
             "diseases": {
                 "D01": "Penyakit Layu Bakteri",
@@ -26,10 +29,8 @@ class TomatoExpertSystem:
                 "D06": "Layu Cendawan",
                 "D07": "Penyakit Ujung Keriting",
                 "D08": "TMV (Tomato Mozaik Virus)",
-                "D09": "PVX (Potato Virus X)",
-                "D10": "PVY (Potato Virus Y)",
-                "D11": "Busuk Ujung Buah",
-                "D12": "Pecah Buah"
+                "D09": "Busuk Ujung Buah",
+                "D10": "Pecah Buah"
             },
             "solutions": {
                 "S01": "Memakai benih yang resisten",
@@ -49,7 +50,8 @@ class TomatoExpertSystem:
                 "S15": "Mengolah tanah dengan baik",
                 "S16": "Memakai Mulva Plastik Perak",
                 "S17": "Memakai Mulva Plastik Jerami atau Mulsa Kuning",
-                "S18": "Membalik tanah dan Membiarkan Terkena Sinar Matahari Selama Beberapa Hari"
+                "S18": "Membalik tanah dan Membiarkan Terkena Sinar Matahari Selama Beberapa Hari",
+                "S19": "Pemberian pupuk kalsium misalnya kapur atau dolomit"
             }
         }
         
@@ -58,7 +60,7 @@ class TomatoExpertSystem:
                 "id": "R01", 
                 "conditions": {"C01", "C02", "C07", "C09"}, 
                 "disease": "D01", 
-                "solutions": ["S01", "S02", "S03", "S04"], 
+                "solutions": ["S01", "S02", "S03", "S04"],
             },
             {
                 "id": "R02", 
@@ -74,58 +76,46 @@ class TomatoExpertSystem:
             },
             {
                 "id": "R04", 
-                "conditions": {"C02", "C10", "C11", "C12"}, 
+                "conditions": {"C02", "C07", "C10", "C12"}, 
                 "disease": "D04", 
                 "solutions": ["S01", "S05", "S08", "S09"], 
             },
             {
                 "id": "R05", 
-                "conditions": {"C01", "C02", "C07", "C08", "C11", "C12"}, 
+                "conditions": {"C01", "C02", "C06", "C07", "C08"}, 
                 "disease": "D05", 
                 "solutions": ["S01", "S05", "S08", "S09"], 
             },
             {
                 "id": "R06", 
-                "conditions": {"C01", "C09", "C16"}, 
+                "conditions": {"C01", "C09", "C14"}, 
                 "disease": "D06", 
                 "solutions": ["S01", "S05", "S09", "S10"], 
             },
             {
                 "id": "R07", 
-                "conditions": {"C01", "C06", "C10", "C16"}, 
+                "conditions": {"C01", "C06", "C10", "C14"}, 
                 "disease": "D07", 
                 "solutions": ["S01", "S05", "S09", "S10"], 
             },
             {
                 "id": "R08", 
-                "conditions": {"C01", "C02", "C10", "C6", "C12"}, 
+                "conditions": {"C03", "C06", "C10", "C14"}, 
                 "disease": "D08", 
                 "solutions": ["S11", "S12", "S13", "S14"], 
             },
             {
                 "id": "R09", 
-                "conditions": {"C03", "C04", "C05", "C15", "C16"}, 
+                "conditions": {"C03","C15"}, 
                 "disease": "D09", 
-                "solutions": ["S11", "S14", "S15"], 
+                "solutions": ["S07", "S14", "S17", "S19"], 
             },
             {
                 "id": "R10", 
-                "conditions": {"C06", "C11", "C12", "C14"}, 
+                "conditions": {"C13"}, 
                 "disease": "D10", 
-                "solutions": ["S14", "S15", "S16"], 
-            },
-            {
-                "id": "R11", 
-                "conditions": {"C01", "C06", "C12", "C14"}, 
-                "disease": "D11", 
-                "solutions": ["S07", "S14", "S17"], 
-            },
-            {
-                "id": "R12", 
-                "conditions": {"C05", "C08", "C15", "C16"}, 
-                "disease": "D12", 
-                "solutions": ["S14", "S15", "S16", "S18"], 
-            },
+                "solutions": ["S14", "S16", "S15", "S18"], 
+            }
             
         ]
 

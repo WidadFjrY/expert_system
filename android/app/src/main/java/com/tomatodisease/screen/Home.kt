@@ -66,7 +66,7 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TomatoApp(navController: NavController){
+fun TomatoApp(navController: NavController) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopAppBar() },
@@ -75,32 +75,48 @@ fun TomatoApp(navController: NavController){
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(horizontal = 26.dp)
-                .fillMaxWidth()
+                .fillMaxSize()
         ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(
-                    text = "Ayo Deteksi Penyakit pada Tomat dan Temukan Solusinya",
-                    style = Typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(modifier = Modifier.height(24.dp))
-                DiagnosisStackedQuestions(navController)
-                Spacer(modifier = Modifier.height(24.dp))
-                Text(text = "Riwayat Diagnosis",
-                    style = Typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                HistoryScreen(navController = navController)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+                item {
+                    Text(
+                        text = "Ayo Deteksi Penyakit pada Tomat dan Temukan Solusinya",
+                        style = Typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+                item {
+                    DiagnosisStackedQuestions(navController)
+                }
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+                item {
+                    Text(
+                        text = "Riwayat Diagnosis",
+                        style = Typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                item {
+                    HistoryScreen(navController = navController)
+                }
             }
         }
     }
-
 }
+
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun DiagnosisStackedQuestions(
@@ -123,12 +139,20 @@ fun DiagnosisStackedQuestions(
                 color = Color(0xFFF0F0F0),
                 shape = RoundedCornerShape(12.dp)
             )
-            .padding(24.dp),
+            .padding(24.dp)
+            .height(260.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
         if (isBegin){
+            Text(
+                text = "Berikan Saya ciri-ciri tanaman Anda",
+                style = Typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(14.dp))
             AnimatedContent(
                 targetState = currentIndex,
                 transitionSpec = {
@@ -139,7 +163,7 @@ fun DiagnosisStackedQuestions(
             ) { targetIndex ->
                 if (targetIndex < questions.size) {
                     Text(
-                        text = "${targetIndex + 1}. ${questions[targetIndex].description}",
+                        text = "Apakah ${questions[targetIndex].description.lowercase()}?",
                         style = Typography.titleMedium,
                         textAlign = TextAlign.Center
                     )
@@ -169,6 +193,7 @@ fun DiagnosisStackedQuestions(
                                     Toast.makeText(context, "Diagnosis gagal. Silakan coba lagi.", Toast.LENGTH_SHORT).show()
                                     currentIndex = 0
                                     selectedConditions.clear()
+                                    isBegin = false
                                 }
                             }
                         } else {
@@ -194,6 +219,7 @@ fun DiagnosisStackedQuestions(
                                     Toast.makeText(context, "Diagnosis gagal. Silakan coba lagi.", Toast.LENGTH_SHORT).show()
                                     currentIndex = 0
                                     selectedConditions.clear()
+                                    isBegin = false
                                 }
                             }
                         } else {
@@ -209,6 +235,7 @@ fun DiagnosisStackedQuestions(
                 onClick = {
                     currentIndex = 0
                     selectedConditions.clear()
+                    isBegin = false
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
@@ -249,8 +276,11 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), navController: NavC
         return
     }
     Spacer(modifier = Modifier.height(12.dp))
-    LazyColumn {
-        items(history) { item ->
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        history.forEach { item ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -287,19 +317,18 @@ fun HistoryScreen(viewModel: HistoryViewModel = viewModel(), navController: NavC
                 )
             }
         }
-    }
-
-    Button(
-        onClick = { viewModel.deleteAllHistory() },
-        shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF2B2B)),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Icon(imageVector = Icons.Default.Delete, contentDescription = "Hapus", tint = Color.White)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text("Hapus Semua Riwayat", color = Color.White, style = Typography.bodyLarge,)
+        Button(
+            onClick = { viewModel.deleteAllHistory() },
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF2B2B)),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Icon(imageVector = Icons.Default.Delete, contentDescription = "Hapus", tint = Color.White)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Hapus Semua Riwayat", color = Color.White, style = Typography.bodyLarge,)
+        }
     }
 }
 

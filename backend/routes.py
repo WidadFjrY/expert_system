@@ -1,10 +1,13 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List, Set
 from expert_system import TomatoExpertSystem
 
 app = FastAPI()
+app.mount("/public", StaticFiles(directory="public"), name="public")
+
 expert_system = TomatoExpertSystem()
 
 class DiagnosisRequest(BaseModel):

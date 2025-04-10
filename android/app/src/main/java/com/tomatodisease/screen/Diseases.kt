@@ -1,5 +1,6 @@
 package com.tomatodisease.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
@@ -34,6 +37,7 @@ import androidx.navigation.NavController
 import androidx.room.Database
 import com.tomatodisease.model.DiagnosisEntity
 import com.tomatodisease.service.AppDatabase
+import com.tomatodisease.service.NetworkImage
 import com.tomatodisease.viewModel.GetDiagnoseViewModel
 import com.tomatodisease.ui.theme.Typography
 import com.tomatodisease.viewModel.HistoryViewModel
@@ -86,25 +90,51 @@ fun DiseasesScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 diagnoseState?.let { data ->
-                    Text(data.disease, style = Typography.titleLarge)
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text(text = "Ciri-ciri", style = Typography.titleMedium,fontWeight = FontWeight.Bold)
-                    data.matchedConditions.forEachIndexed{index, condition ->
-                        val number = index+1
-                        Row {
-                            Text("$number.", modifier = Modifier.width(15.dp))
-                            Text(condition)
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        item {
+                            Text(data.disease, style = Typography.titleLarge)
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                        item {
+                            NetworkImage(fileName = data.ruleId)
+                            Spacer(modifier = Modifier.height(16.dp))
+                        }
+                        item {
+                            Text(
+                                text = "Ciri-ciri",
+                                style = Typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                        itemsIndexed(data.matchedConditions) { index, condition ->
+                            Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                Text("${index + 1}.", modifier = Modifier.width(15.dp))
+                                Text(condition)
+                            }
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "Solusi",
+                                style = Typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                        itemsIndexed(data.solution) { index, solution ->
+                            Row(modifier = Modifier.padding(vertical = 2.dp)) {
+                                Text("${index + 1}.", modifier = Modifier.width(15.dp))
+                                Text(solution)
+                            }
+                        }
+                        item {
+                            Spacer(modifier = Modifier.height(32.dp))
                         }
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text("Solusi", style =  Typography.titleMedium, fontWeight = FontWeight.Bold)
-                    data.solution.forEachIndexed {index, solution ->
-                        val number = index+1
-                        Row {
-                            Text("$number.", modifier = Modifier.width(15.dp))
-                            Text(solution)
-                        }
-                    }
+
                 }
             }
         }
