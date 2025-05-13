@@ -123,7 +123,7 @@ class TomatoExpertSystem:
         results = []
     
         for rule in self.rules:
-            if rule["conditions"] == input_conditions:  # Pastikan kondisi harus sama persis
+            if rule["conditions"] == input_conditions:  
                 disease_desc = self.mappings["diseases"][rule["disease"]]
                 solution_desc = [self.mappings["solutions"][s] for s in rule["solutions"]]
                 condition_desc = [self.mappings["conditions"][c] for c in rule["conditions"]]
